@@ -1,4 +1,4 @@
-My ESPHome yaml files.\n new line
+My ESPHome yaml files. This includes:
 
 Apollo Automation AIR-1
 
