@@ -1,12 +1,13 @@
 substitutions:
   name: esp32-devkit1
-  version: "24.8.3.0"
+  version: "24.10.15.0"
   device_description: ${name} made by Larry Greenwald - version ${version}.
+  friendly_name: ESP32 DevKit1
 
 esphome:
   name: "${name}"
-  friendly_name: ESP32-DevKit1
-  comment: ESP32-DevKit1
+  friendly_name: "${friendly_name}"
+  comment: ESP32 DevKit1
   name_add_mac_suffix: False
   platformio_options:
     board_build.flash_mode: dio
@@ -20,15 +21,20 @@ esphome:
 esp32:
   board: esp32-c3-devkitm-1
   framework:
-    type: arduino
+    type: esp-idf
+
+dashboard_import:
+  package_import_url: github://ApolloAutomation/AIR-1/Integrations/ESPHome/AIR-1.yaml
+  import_full_config: false
 
 # Enable logging
 logger:
-
+  level: NONE
 # Enable Home Assistant API
 api:
   encryption:
-    key: "wMmO5gTZqzOIWPlUChxFJ02YDHn03VbuRDG2IU/6Sf4="
+#    key: "wMmO5gTZqzOIWPlUChxFJ02YDHn03VbuRDG2IU/6Sf4="
+    key: !secret esp32-devkit1-api-key
 
 ota:
   - platform: esphome
@@ -37,11 +43,12 @@ ota:
 wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
+  power_save_mode: LIGHT
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
     ssid: "Esp32-Devkit1 Fallback Hotspot"
-    password: "9VM4BmHmWGu4"
+    password: !secret ap_password
 
   manual_ip:
     # Set this to the IP of the ESP
@@ -50,6 +57,8 @@ wifi:
     gateway: 192.168.1.1
     # The subnet of the network. 255.255.255.0 works for most home networks.
     subnet: 255.255.255.0
+    dns1: 192.168.1.181
+    dns2: 192.168.1.107
 
 captive_portal:
 
@@ -73,4 +82,44 @@ sensor:
     id: wifi_signal_db
     update_interval: 60s
     entity_category: "diagnostic"
-    
+
+light:
+  - platform: esp32_rmt_led_strip
+    id: rgb_light
+    name: "RGB Light"
+    pin: GPIO8
+    rmt_channel: 0
+    default_transition_length: 0s
+    chipset: WS2812
+    num_leds: 1
+    rgb_order: grb
+#    restore_mode: RESTORE_DEFAULT_ON
+    effects:
+      - pulse:
+          name: "Slow Pulse"
+          transition_length: 1000ms
+          update_interval: 1000ms
+          min_brightness: 15%
+          max_brightness: 40%
+      - pulse:
+          name: "Fast Pulse"
+          transition_length: 100ms
+          update_interval: 100ms
+          min_brightness: 50%
+          max_brightness: 100%
+      - random:
+      - random:
+          name: Random Effect With Custom Values
+          transition_length: 5s
+          update_interval: 7s
+      - addressable_rainbow:
+      - addressable_rainbow:
+          name: Rainbow Effect With Custom Values
+          speed: 10
+          width: 50
+
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: " IP"
+      icon: "mdi:ip-outline"

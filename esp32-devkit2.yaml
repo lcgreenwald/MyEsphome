@@ -1,12 +1,13 @@
 substitutions:
   name: esp32-devkit2
-  version: "24.8.3.0"
+  version: "24.10.15.0"
   device_description: ${name} made by Larry Greenwald - version ${version}.
+  friendly_name: ESP32 DevKit2
 
 esphome:
   name: "${name}"
-  friendly_name: ESP32-DevKit2
-  comment: ESP32-DevKit2
+  friendly_name: "${friendly_name}"
+  comment: ESP32 DevKit2
   name_add_mac_suffix: False
   platformio_options:
     board_build.flash_mode: dio
@@ -20,15 +21,17 @@ esphome:
 esp32:
   board: esp32-c3-devkitm-1
   framework:
-    type: arduino
+    type: esp-idf
 
 # Enable logging
 logger:
-
+  level: NONE
+  
 # Enable Home Assistant API
 api:
   encryption:
-    key: "cSXl26W3ORyN/4zybUIWB445Usld1FIjD8PFjAXdRSQ="
+#    key: "cSXl26W3ORyN/4zybUIWB445Usld1FIjD8PFjAXdRSQ="
+    key: !secret esp32-devkit2-api-key
 
 ota:
   - platform: esphome
@@ -41,7 +44,7 @@ wifi:
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
     ssid: "Esp32-Devkit2 Fallback Hotspot"
-    password: "P9tTFbgcxVxi"
+    password: !secret ap_password
 
   manual_ip:
     # Set this to the IP of the ESP
@@ -50,6 +53,8 @@ wifi:
     gateway: 192.168.1.1
     # The subnet of the network. 255.255.255.0 works for most home networks.
     subnet: 255.255.255.0
+    dns1: 192.168.1.181
+    dns2: 192.168.1.107
 
 captive_portal:
 
@@ -74,4 +79,54 @@ sensor:
     update_interval: 60s
     entity_category: "diagnostic"
 
+light:
+  - platform: esp32_rmt_led_strip
+    id: rgb_light
+    name: "RGB Light"
+    pin: GPIO8
+    rmt_channel: 0
+    default_transition_length: 0s
+    chipset: WS2812
+    num_leds: 1
+    rgb_order: grb
+#    restore_mode: RESTORE_DEFAULT_ON
+    effects:
+      - pulse:
+          name: "Slow Pulse"
+          transition_length: 1000ms
+          update_interval: 1000ms
+          min_brightness: 15%
+          max_brightness: 40%
+      - pulse:
+          name: "Fast Pulse"
+          transition_length: 100ms
+          update_interval: 100ms
+          min_brightness: 50%
+          max_brightness: 100%
+      - random:
+      - random:
+          name: Random Effect With Custom Values
+          transition_length: 5s
+          update_interval: 7s
+      - addressable_rainbow:
+      - addressable_rainbow:
+          name: Rainbow Effect With Custom Values
+          speed: 10
+          width: 50
+
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: " IP"
+      icon: "mdi:ip-outline"    
+
+
+#esp32_ble_tracker:
+#  id: esp32_devkit2_ble_tracker
+#  scan_parameters:
+#    active: false
     
+#bluetooth_proxy:
+#  active: true
+
+  

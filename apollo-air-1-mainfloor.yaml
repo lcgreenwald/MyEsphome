@@ -2,12 +2,13 @@
 # Define Project
 substitutions:
   name: apollo-air-1-mainfloor
-  version: "24.7.15.1"
+  version: "24.10.20.0"
   device_description: ${name} made by Apollo Automation - version ${version}.
+  friendly_name: Apollo AIR-1 Main Floor
 
 esphome:
   name: "${name}"
-  friendly_name: Apollo AIR-1 Main Floor
+  friendly_name: "${friendly_name}"
   comment: Apollo AIR-1
   name_add_mac_suffix: False
   platformio_options:
@@ -42,7 +43,8 @@ globals:
 # Enable Home Assistant API
 api:
   encryption:
-    key: YWdfs+WKw3ZxDRNQpzR9L6Ma+JURvZQbdjynhxTYAdc=
+#    key: YWdfs+WKw3ZxDRNQpzR9L6Ma+JURvZQbdjynhxTYAdc=
+    key:  !secret apollo-air-1-mainfloor-api-key
   on_client_connected:
     - delay: 1s
     - light.turn_off: rgb_light
@@ -75,7 +77,8 @@ wifi:
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
-    ssid: "Apollo AIR1 Hotspot"
+    ssid: "${friendly_name} Hotspot"
+    password: !secret ap_password
 
   manual_ip:
     # Set this to the IP of the ESP
@@ -84,6 +87,8 @@ wifi:
     gateway: 192.168.1.1
     # The subnet of the network. 255.255.255.0 works for most home networks.
     subnet: 255.255.255.0
+    dns1: 192.168.1.181
+    dns2: 192.168.1.107
     
 captive_portal:
 
@@ -123,6 +128,31 @@ number:
     max_value: 70.0
     entity_category: "CONFIG"
     unit_of_measurement: "%"
+    optimistic: true
+    update_interval: never
+    step: 0.1
+    mode: box
+  - platform: template
+    name: SCD40 Humidity Offset
+    id: scd40_humidity_offset
+    restore_value: true
+    initial_value: 0
+    min_value: -70.0
+    max_value: 70.0
+    entity_category: "CONFIG"
+    unit_of_measurement: "%"
+    optimistic: true
+    update_interval: never
+    step: 0.1
+    mode: box
+  - platform: template
+    name: SCD40 Temperature Offset
+    id: scd40_temperature_offset
+    initial_value: 6.2
+    min_value: -70.0
+    max_value: 70.0
+    entity_category: "CONFIG"
+    unit_of_measurement: "°C"
     optimistic: true
     update_interval: never
     step: 0.1
@@ -179,6 +209,16 @@ sensor:
     measurement_mode: "periodic"
     i2c_id: bus_a
     ambient_pressure_compensation_source: dps310pressure
+    humidity:
+      name: "SCD40 Humidity"
+      id: "humidity"
+      filters:
+        - lambda: return x - id(scd40_humidity_offset).state;
+    temperature:
+      name: "SCD40 Temperature"
+      id: "temperature"
+      filters:
+        - lambda: return x - id(scd40_temperature_offset).state;
 
   - platform: dps310
     id: dps_310
@@ -388,11 +428,11 @@ text_sensor:
     id: voc_quality
     icon: mdi:air-filter
     lambda: |-
-      if (id(sen55_voc).state < 50) {
+      if (id(sen55_voc).state < 150) {
         return std::string("Good");} 
-      else if (id(sen55_voc).state < 100) {
+      else if (id(sen55_voc).state < 250) {
         return std::string("Moderate");} 
-      else if (id(sen55_voc).state < 150) {
+      else if (id(sen55_voc).state < 350) {
         return std::string("High");} 
       else {
         return std::string("Very High");}
@@ -403,7 +443,7 @@ text_sensor:
     id: pm2_5_quality
     icon: mdi:air-filter
     lambda: |-
-      if (id(pm_2_5).state < 13) {
+      if (id(pm_2_5).state < 9.1) {
         return std::string("Good");} 
       else if (id(pm_2_5).state < 36) {
         return std::string("Moderate");} 
@@ -415,14 +455,19 @@ text_sensor:
         return std::string("Very Unhealthy");} 
       else {
         return std::string("Hazardous");}
-        
+
+  - platform: wifi_info
+    ip_address:
+      name: " IP"
+      icon: "mdi:ip-outline"      
+
     # Convert PM 1-2.5 Index To Text: 
   - platform: template
     name: "PM 1-2.5 AQI"
     id: pm1_to_2_5_quality
     icon: mdi:air-filter
     lambda: |-
-      if (id(pm1_to_2_5).state < 13) {
+      if (id(pm1_to_2_5).state < 9.1) {
         return std::string("Good");} 
       else if (id(pm1_to_2_5).state < 36) {
         return std::string("Moderate");} 
@@ -490,4 +535,3 @@ interval:
                 id: rgb_light
             - lambda: 'id(cycleCounter) += 1;'
 
-      
