@@ -18,7 +18,6 @@ esphome:
     name: "ApolloAutomation.AIR-1"
     version: "${version}"
 
-
   min_version: 2024.6.0
 
 esp32:
@@ -66,7 +65,6 @@ ota:
   - platform: esphome
     password: "apolloautomation"
     id: ota_default
-
 
 wifi:
   ssid: !secret wifi_ssid
@@ -157,7 +155,6 @@ number:
     update_interval: never
     step: 0.1
     mode: box
-    
 
 binary_sensor:
   - platform: status
@@ -219,8 +216,6 @@ sensor:
       id: "temperature"
       filters:
         - lambda: return x - id(scd40_temperature_offset).state;
-
-
 
   - platform: dps310
     id: dps_310
@@ -394,9 +389,6 @@ light:
           alpha: 95%
           intensity: 1.5%
 
-
-
-
 button:
   - platform: restart
     icon: mdi:power-cycle
@@ -495,7 +487,7 @@ text_sensor:
     ip_address:
       name: " IP"
       icon: "mdi:ip-outline"      
-        
+
 switch:
   - platform: template
     name: "Startup Light Blink"
