@@ -2,7 +2,7 @@
 # Define Project
 substitutions:
   name: apollo-air-1-test
-  version: "24.10.20.0"
+  version: "24.11.03.0"
   device_description: ${name} made by Apollo Automation - version ${version}.
   friendly_name: Apollo AIR-1 Test
 
@@ -26,8 +26,8 @@ esp32:
     type: arduino
 
 dashboard_import:
-  package_import_url: github://ApolloAutomation/AIR-1/Integrations/ESPHome/AIR-1.yaml
-  import_full_config: false
+  package_import_url: github://ApolloAutomation/AIR-1/Integrations/ESPHome/AIR-1.yaml@main
+  import_full_config: True
 
 globals:
   - id: cycleCounter
@@ -42,7 +42,6 @@ globals:
 # Enable Home Assistant API
 api:
   encryption:
-#    key: g0pexVpFhjlNa7NAI60bZ2URDyOAStrTiWjlTJpbNSg=
     key: !secret apollo-air-1-test-api-key
   on_client_connected:
     - delay: 1s
@@ -331,6 +330,78 @@ sensor:
       name: Ammonia
     update_interval: 10s
 
+  - platform: template
+    name: "PM2.5 InstantAQI Value"
+    device_class: aqi
+    id: pm25_instant_aqi_value
+    state_class: measurement
+    icon: mdi:air-filter
+    accuracy_decimals: 0
+    lambda: |-
+      int pm25_instant_aqi_metric = 0;
+      if (id(pm_2_5).state < 9.0) {
+        // good
+        id(pm25_instant_aqi_category).publish_state("Good");
+        pm25_instant_aqi_metric = (50.0 - 0.0) / (9.0 - 0.0) * (id(pm_2_5).state - 0.0) + 0.0;
+      } else if (id(pm_2_5).state < 35.4) {
+        // moderate
+        id(pm25_instant_aqi_category).publish_state("Moderate");
+        pm25_instant_aqi_metric = (100.0 - 51.0) / (35.4 - 9.1) * (id(pm_2_5).state - 9.0) + 51.0;
+      } else if (id(pm_2_5).state < 55.4) {
+        // Unhealthy for Sensitive Groups
+        id(pm25_instant_aqi_category).publish_state("Unhealthy for Sensitive Groups");
+        pm25_instant_aqi_metric = (150.0 - 101.0) / (55.4 - 35.5) * (id(pm_2_5).state - 35.5) + 101.0;
+      } else if (id(pm_2_5).state < 125.4) {
+        // unhealthy
+        id(pm25_instant_aqi_category).publish_state("Unhealthy");
+        pm25_instant_aqi_metric = (200.0 - 151.0) / (125.4 - 55.5) * (id(pm_2_5).state - 55.5) + 151.0;
+      } else if (id(pm_2_5).state < 225.4) {
+        // very unhealthy
+        id(pm25_instant_aqi_category).publish_state("Very Unhealthy");
+        pm25_instant_aqi_metric = (300.0 - 201.0) / (225.4 - 125.5) * (id(pm_2_5).state - 125.5) + 201.0;
+      } else if (id(pm_2_5).state > 225.5) {
+        // hazardous
+        id(pm25_instant_aqi_category).publish_state("Hazardous");
+        pm25_instant_aqi_metric = 500;
+      }
+      return pm25_instant_aqi_metric;
+
+  - platform: template
+    name: "PM10 InstantAQI Value"
+    device_class: aqi
+    id: pm10_instant_aqi_value
+    state_class: measurement
+    icon: mdi:air-filter
+    accuracy_decimals: 0
+    lambda: |-
+      int pm10_instant_aqi_metric = 0;
+      if (id(pm_10_0).state < 54) {
+        // good
+        id(pm10_instant_aqi_category).publish_state("Good");
+        pm10_instant_aqi_metric = (50.0 - 0.0) / (54 - 0) * (id(pm_10_0).state - 0.0) + 0.0;
+      } else if (id(pm_10_0).state < 154) {
+        // moderate
+        id(pm10_instant_aqi_category).publish_state("Moderate");
+        pm10_instant_aqi_metric = (100.0 - 51.0) / (154 - 55) * (id(pm_10_0).state - 9.0) + 51.0;
+      } else if (id(pm_10_0).state < 254) {
+        // Unhealthy for Sensitive Groups
+        id(pm10_instant_aqi_category).publish_state("Unhealthy for Sensitive Groups");
+        pm10_instant_aqi_metric = (150.0 - 101.0) / (254 - 155) * (id(pm_10_0).state - 35.5) + 101.0;
+      } else if (id(pm_10_0).state < 354) {
+        // unhealthy
+        id(pm10_instant_aqi_category).publish_state("Unhealthy");
+        pm10_instant_aqi_metric = (200.0 - 151.0) / (354 - 255) * (id(pm_10_0).state - 55.5) + 151.0;
+      } else if (id(pm_10_0).state < 424) {
+        // very unhealthy
+        id(pm10_instant_aqi_category).publish_state("Very Unhealthy");
+        pm10_instant_aqi_metric = (300.0 - 201.0) / (424 - 355) * (id(pm_10_0).state - 125.5) + 201.0;
+      } else if (id(pm_10_0).state > 425) {
+        // hazardous
+        id(pm10_instant_aqi_category).publish_state("Hazardous");
+        pm10_instant_aqi_metric = 500;
+      }
+      return pm10_instant_aqi_metric;
+
 light:
   - platform: esp32_rmt_led_strip
     id: rgb_light
@@ -414,23 +485,7 @@ button:
       - sen5x.start_fan_autoclean: sen55
 
 text_sensor:
-    # Convert VOC Index To Text: 
-    # https://sensirion.com/media/documents/02232963/6294E043/Info_Note_VOC_Index.pdf
-    # https://sensirion.com/media/documents/ACD82D45/6294DFC0/Info_Note_Integration_VOC_NOx_Sensor.pdf
-  - platform: template
-    name: "VOC Quality"
-    id: voc_quality
-    icon: mdi:air-filter
-    lambda: |-
-      if (id(sen55_voc).state < 150) {
-        return std::string("Good");} 
-      else if (id(sen55_voc).state < 250) {
-        return std::string("Moderate");} 
-      else if (id(sen55_voc).state < 350) {
-        return std::string("High");} 
-      else {
-        return std::string("Very High");}
-        
+          
     # Convert PM2.5 Index To Text: 
   - platform: template
     name: "PM2.5 AQI"
@@ -487,6 +542,51 @@ text_sensor:
     ip_address:
       name: " IP"
       icon: "mdi:ip-outline"      
+
+  # Convert VOC Index To Text: 
+  # https://sensirion.com/media/documents/02232963/6294E043/Info_Note_VOC_Index.pdf
+  # https://sensirion.com/media/documents/ACD82D45/6294DFC0/Info_Note_Integration_VOC_NOx_Sensor.pdf
+  - platform: template
+    name: "VOC Quality"
+    id: voc_quality
+    icon: mdi:air-filter
+    lambda: |-
+      if (id(sen55_voc).state < 100) {
+        return std::string("Clean");} 
+      else if (id(sen55_voc).state < 200) {
+        return std::string("Normal");} 
+      else if (id(sen55_voc).state < 400) {
+        return std::string("Abnormal");} 
+      else if (id(sen55_voc).state < 500) {
+        return std::string("Worrisome");} 
+      else {
+        return std::string("Dangerous");}
+
+  - platform: template
+    name: "PM2.5 InstantAQI Category"
+    icon: "mdi:pine-tree-fire"
+    id: pm25_instant_aqi_category
+    update_interval: never
+
+  - platform: template
+    name: "PM10 InstantAQI Category"
+    icon: "mdi:pine-tree-fire"
+    id: pm10_instant_aqi_category
+    update_interval: never
+
+  - platform: template
+    name: "PM2.5 InstantAQI"
+    icon: "mdi:pine-tree-fire"
+    lambda: |-
+      std::string val = id(pm25_instant_aqi_category).state;
+      return str_sprintf("%.0f - %s", id(pm25_instant_aqi_value).state, val.c_str());
+
+  - platform: template
+    name: "PM10 InstantAQI"
+    icon: "mdi:pine-tree-fire"
+    lambda: |-
+      std::string val = id(pm10_instant_aqi_category).state;
+      return str_sprintf("%.0f - %s", id(pm10_instant_aqi_value).state, val.c_str());
 
 switch:
   - platform: template
