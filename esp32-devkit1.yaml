@@ -33,8 +33,7 @@ logger:
 # Enable Home Assistant API
 api:
   encryption:
-#    key: "wMmO5gTZqzOIWPlUChxFJ02YDHn03VbuRDG2IU/6Sf4="
-    key: !secret esp32-devkit1-api-key
+    key: !secret api-key
 
 ota:
   - platform: esphome
