@@ -1,0 +1,71 @@
+type: gauge
+entity: sensor.apollo_air_1_mainfloor_sen55_voc
+segments:
+  - from: 0
+    color: "#008000"
+  - from: 150
+    color: "#FFFF00"
+  - from: 250
+    color: "#FFA500"
+  - from: 350
+    color: "#FF0000"
+needle: true
+min: 0
+max: 500
+
+
+type: gauge
+entity: sensor.apollo_air_1_mainfloor_co2
+needle: true
+unit: ppm
+min: 0
+max: 3000
+severity:
+  green: 0
+  yellow: 1000
+  red: 2000
+
+
+type: gauge
+entity: sensor.apollo_air_1_mainfloor_pm_2_5_m_weight_concentration
+segments:
+  - from: 0
+    color: "#008000"
+  - from: 13
+    color: "#FFFF00"
+  - from: 36
+    color: "#FFA500"
+  - from: 57
+    color: "#800080"
+  - from: 151
+    color: "#FF0000"
+needle: true
+min: 0
+max: 200
+
+
+type: gauge
+entity: sensor.apollo_air_1_mainfloor_pm2_5_instantaqi_value
+segments:
+  - from: 0
+    color: "#008000"
+  - from: 54
+    color: "#FFFF00"
+  - from: 254
+    color: "#FFA500"
+  - from: 354
+    color: "#800080"
+  - from: 424
+    color: "#FF0000"
+needle: true
+min: 0
+max: 500
+
+
+
+
+
+
+
+
+

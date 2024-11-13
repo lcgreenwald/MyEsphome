@@ -1,0 +1,21 @@
+type: entities
+entities:
+  - entity: sensor.apollo_plt_1_b2c504_sen55_voc
+  - entity: sensor.apollo_plt_1_b2c504_voc_quality
+  - entity: sensor.apollo_plt_1_b2c504_co2
+  - entity: sensor.apollo_plt_1_b2c504_co2_quality
+  - entity: sensor.apollo_plt_1_b2c504_sen55_temperature
+  - entity: sensor.apollo_plt_1_b2c504_sen55_humidity
+  - entity: sensor.apollo_plt_1_b2c504_scd40_temperature
+  - entity: sensor.apollo_plt_1_b2c504_scd40_humidity
+  - entity: sensor.apollo_plt_1_b2c504_dps310_pressure
+  - entity: sensor.apollo_plt_1_b2c504_pm_1_m_weight_concentration
+  - entity: sensor.apollo_plt_1_b2c504_pm_2_5_m_weight_concentration
+  - entity: sensor.apollo_plt_1_b2c504_pm_4_m_weight_concentration
+  - entity: sensor.apollo_plt_1_b2c504_pm_10_m_weight_concentration
+  - entity: sensor.apollo_plt_1_b2c504_sen55_nox
+  - entity: sensor.apollo_plt_1_b2c504_esp_temperature
+  - entity: binary_sensor.apollo_plt_1_b2c504_online
+  - entity: sensor.apollo_plt_1_b2c504_uptime
+  - entity: light.apollo_plt_1_b2c504_rgb_light
+title: "Apollo PLT-1 Greenhouse1 "
