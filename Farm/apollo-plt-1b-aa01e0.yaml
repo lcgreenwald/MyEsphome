@@ -1,0 +1,17 @@
+substitutions:
+  name: apollo-plt-1b-aa01e0
+  friendly_name: Apollo PLT-1B aa01e0
+packages:
+  ApolloAutomation.PLT-1B: github://ApolloAutomation/PLT-1/Integrations/ESPHome/PLT-1B.yaml
+esphome:
+  name: ${name}
+  name_add_mac_suffix: false
+  friendly_name: ${friendly_name}
+api:
+  encryption:
+#    key: 4aAHLc6tvjS9cQFziobhYqOAwEORoz+PnqkSkqCoK1Y=
+    key: !secret plt-1b-garden1-api_key
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password

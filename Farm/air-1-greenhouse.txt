@@ -1,0 +1,32 @@
+type: entities
+entities:
+  - entity: sensor.apollo_air_1_b24ba4_sen55_voc
+  - entity: sensor.apollo_air_1_b24ba4_voc_quality
+  - entity: sensor.apollo_air_1_b24ba4_co2
+  - entity: sensor.apollo_air_1_b24ba4_co2_quality
+  - entity: sensor.apollo_air_1_b24ba4_pm2_5_instantaqi
+  - entity: sensor.apollo_air_1_b24ba4_pm2_5_instantaqi_category
+  - entity: sensor.apollo_air_1_b24ba4_pm2_5_instantaqi_value
+  - entity: sensor.apollo_air_1_b24ba4_pm10_instantaqi
+  - entity: sensor.apollo_air_1_b24ba4_pm10_instantaqi_category
+  - entity: sensor.apollo_air_1_b24ba4_sen55_temperature
+  - entity: sensor.apollo_air_1_b24ba4_sen55_humidity
+  - entity: sensor.apollo_air_1_b24ba4_scd40_temperature
+  - entity: sensor.apollo_air_1_b24ba4_scd40_humidity
+  - entity: sensor.apollo_air_1_b24ba4_dps310_pressure
+  - entity: sensor.apollo_air_1_b24ba4_pm_1_m_weight_concentration
+  - entity: sensor.apollo_air_1_b24ba4_pm_2_5_m_weight_concentration
+  - entity: sensor.apollo_air_1_b24ba4_pm_4_m_weight_concentration
+  - entity: sensor.apollo_air_1_b24ba4_pm_10_m_weight_concentration
+  - entity: sensor.apollo_air_1_b24ba4_pm_0_3_to_1_m
+  - entity: sensor.apollo_air_1_b24ba4_pm_1_to_2_5_m
+  - entity: sensor.apollo_air_1_b24ba4_pm_2_5_to_4_m
+  - entity: sensor.apollo_air_1_b24ba4_pm_4_to_10_m
+  - entity: sensor.apollo_air_1_b24ba4_sen55_nox
+  - entity: sensor.apollo_air_1_b24ba4_esp_temperature
+  - entity: binary_sensor.apollo_air_1_b24ba4_online
+  - entity: sensor.apollo_air_1_b24ba4_uptime
+  - entity: sensor.apollo_air_1_b24ba4_ip
+  - entity: light.apollo_air_1_b24ba4_rgb_light
+  - entity: sensor.apollo_air_1_b24ba4_pm10_instantaqi_value
+title: "Apollo AIR-1 Greenhouse "

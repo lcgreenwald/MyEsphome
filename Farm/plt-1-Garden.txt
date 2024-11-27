@@ -1,0 +1,26 @@
+type: entities
+entities:
+  - entity: sensor.apollo_air_1_garden1_sen55_voc
+  - entity: sensor.apollo_air_1_garden1_voc_quality
+  - entity: sensor.apollo_air_1_garden1_co2
+  - entity: sensor.apollo_air_1_garden1_co2_quality
+  - entity: sensor.apollo_air_1_garden1_pm2_5_instantaqi
+  - entity: sensor.apollo_air_1_garden1_pm2_5_instantaqi_category
+  - entity: sensor.apollo_air_1_garden1_pm2_5_instantaqi_value
+  - entity: sensor.apollo_air_1_garden1_pm10_instantaqi
+  - entity: sensor.apollo_air_1_garden1_pm10_instantaqi_category
+  - entity: sensor.apollo_air_1_garden1_sen55_temperature
+  - entity: sensor.apollo_air_1_garden1_sen55_humidity
+  - entity: sensor.apollo_air_1_garden1_scd40_temperature
+  - entity: sensor.apollo_air_1_garden1_scd40_humidity
+  - entity: sensor.apollo_air_1_garden1_dps310_pressure
+  - entity: sensor.apollo_air_1_garden1_pm_1_m_weight_concentration
+  - entity: sensor.apollo_air_1_garden1_pm_2_5_m_weight_concentration
+  - entity: sensor.apollo_air_1_garden1_pm_4_m_weight_concentration
+  - entity: sensor.apollo_air_1_garden1_pm_10_m_weight_concentration
+  - entity: sensor.apollo_air_1_garden1_sen55_nox
+  - entity: sensor.apollo_air_1_garden1_esp_temperature
+  - entity: binary_sensor.apollo_air_1_garden1_online
+  - entity: sensor.apollo_air_1_garden1_uptime
+  - entity: light.apollo_air_1_garden1_rgb_light
+title: "Apollo PLT-1B Garden1 "
