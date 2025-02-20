@@ -32,13 +32,6 @@ ota:
     password: !secret ota_password
 #    password: "1c71d2a5785eb9d3f21dc87141938281"
 
-wifi:
-  # Enable fallback hotspot (captive portal) in case wifi connection fails
-  ap:
-    ssid: "Esp32-Devkit1 Fallback Hotspot"
-    password: !secret ap_password
-    dns2: 192.168.1.107
-
 captive_portal:
 
 safe_mode:
