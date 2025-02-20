@@ -5,7 +5,8 @@ packages:
   lcgreenwald.devkits: # name of package/project
     url: https://github.com/lcgreenwald/devkits # url of the repository
     ref: dev # branch, tag or commit SHA
-    files: [Integrations/ESPHome/devkits.yaml] # Path to config from base repo URL
+    files:
+      - ESP32-devkits/esp32-devkit-core.yaml # Path to config from base repo URL
     refresh: 1min # how often to sync updates from the remote url
 
 esphome:
