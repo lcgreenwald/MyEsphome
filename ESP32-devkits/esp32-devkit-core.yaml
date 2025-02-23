@@ -31,7 +31,7 @@ ota:
     password: !secret ota_password
 #    password: "1c71d2a5785eb9d3f21dc87141938281"
 
-captive_portal:
+#captive_portal:
 
 safe_mode:
 
