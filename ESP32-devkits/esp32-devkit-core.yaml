@@ -1,13 +1,12 @@
 substitutions:
   version: "25.02.23.0"
   device_description: ${name} made by Larry Greenwald - version ${version}.
-  friendly_name: ESP32 DevKit1
 
 
 esphome:
   name: "${name}"
   friendly_name: "${friendly_name}"
-  comment: ESP32 DevKit1
+#  comment: ESP32 DevKit1
   name_add_mac_suffix: False
   platformio_options:
     board_build.flash_mode: dio

@@ -1,5 +1,6 @@
 substitutions:
   name: esp32-devkit1
+  friendly_name: ESP32 DevKit1
 
 packages:
   lcgreenwald.devkits: # name of package/project
@@ -10,18 +11,18 @@ packages:
     refresh: 1min # how often to sync updates from the remote url
 
 esphome:
-  name: "${name}"
-  friendly_name: "${friendly_name}"
+#  name: "${name}"
+#  friendly_name: "${friendly_name}"
   comment: ESP32 DevKit1
-  name_add_mac_suffix: False
-  platformio_options:
-    board_build.flash_mode: dio
+#  name_add_mac_suffix: False
+#  platformio_options:
+#    board_build.flash_mode: dio
 
-  project:
-    name: "LarryGreenwald.${name}"
-    version: "${version}"
+#  project:
+#    name: "LarryGreenwald.${name}"
+#    version: "${version}"
 
-  min_version: 2024.6.0
+#  min_version: 2024.6.0
 
 esp32:
   board: esp32-c3-devkitm-1
