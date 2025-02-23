@@ -9,8 +9,8 @@ esphome:
   friendly_name: ${friendly_name}
 api:
   encryption:
-#    key: 4aAHLc6tvjS9cQFziobhYqOAwEORoz+PnqkSkqCoK1Y=
-    key: !secret plt-1b-garden1-api_key
+    key: 4aAHLc6tvjS9cQFziobhYqOAwEORoz+PnqkSkqCoK1Y=
+
 
 wifi:
   ssid: !secret wifi_ssid

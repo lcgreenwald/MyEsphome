@@ -1,13 +1,13 @@
 substitutions:
-  name: esp32-wroom2
+  name: esp32-wroom1
   version: "24.10.25.0"
   device_description: ${name} made by Larry Greenwald - version ${version}.
-  friendly_name: ESP32 Wroom2
+  friendly_name: ESP32 Wroom1
 
 esphome:
   name: "${name}"
   friendly_name: "${friendly_name}"
-  comment: ESP32 Wroom2
+  comment: ESP32 Wroom1
   name_add_mac_suffix: False
   platformio_options:
     board_build.flash_mode: dio
@@ -33,7 +33,7 @@ logger:
 # Enable Home Assistant API
 api:
   encryption:
-    key: !secret esp32-devkit1-api-key
+    key: !secret api-key
 
 ota:
   - platform: esphome
@@ -51,7 +51,7 @@ wifi:
 
   manual_ip:
     # Set this to the IP of the ESP
-    static_ip: 192.168.1.193
+    static_ip: 192.168.1.192
     # Set this to the IP address of the router. Often ends with .1
     gateway: 192.168.1.1
     # The subnet of the network. 255.255.255.0 works for most home networks.
@@ -87,3 +87,12 @@ text_sensor:
     ip_address:
       name: " IP"
       icon: "mdi:ip-outline"
+
+#bluetooth_proxy:
+
+#esp32_ble_tracker:
+#  scan_parameters:
+#    interval: 1100ms
+#    window: 1100ms
+
+    

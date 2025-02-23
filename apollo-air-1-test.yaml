@@ -207,12 +207,12 @@ sensor:
     ambient_pressure_compensation_source: dps310pressure
     humidity:
       name: "SCD40 Humidity"
-      accuracy_decimals: 0
+      id: "humidity"
       filters:
         - lambda: return x - id(scd40_humidity_offset).state;
     temperature:
       name: "SCD40 Temperature"
-      accuracy_decimals: 1
+      id: "temperature"
       filters:
         - lambda: return x - id(scd40_temperature_offset).state;
 

@@ -1,13 +1,13 @@
 substitutions:
-  name: esp32-wroom2
-  version: "24.10.25.0"
+  name: esp32-devkit1
+  version: "24.10.15.0"
   device_description: ${name} made by Larry Greenwald - version ${version}.
-  friendly_name: ESP32 Wroom2
+  friendly_name: ESP32 DevKit1
 
 esphome:
   name: "${name}"
   friendly_name: "${friendly_name}"
-  comment: ESP32 Wroom2
+  comment: ESP32 DevKit1
   name_add_mac_suffix: False
   platformio_options:
     board_build.flash_mode: dio
@@ -19,7 +19,7 @@ esphome:
   min_version: 2024.6.0
 
 esp32:
-  board: esp32dev
+  board: esp32-c3-devkitm-1
   framework:
     type: esp-idf
 
@@ -31,13 +31,19 @@ dashboard_import:
 logger:
   level: NONE
 # Enable Home Assistant API
+
+i2c:
+  sda: GPIO1
+  scl: GPIO0
+  id: bus_a
+
 api:
   encryption:
-    key: !secret esp32-devkit1-api-key
+    key: !secret api-key
 
 ota:
   - platform: esphome
-    password: !secret ota-password
+    password: "1c71d2a5785eb9d3f21dc87141938281"
 
 wifi:
   ssid: !secret wifi_ssid
@@ -46,12 +52,12 @@ wifi:
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
-    ssid: "${friendly_name} Fallback Hotspot"
+    ssid: "Esp32-Devkit1 Fallback Hotspot"
     password: !secret ap_password
 
   manual_ip:
     # Set this to the IP of the ESP
-    static_ip: 192.168.1.193
+    static_ip: 192.168.1.190
     # Set this to the IP address of the router. Often ends with .1
     gateway: 192.168.1.1
     # The subnet of the network. 255.255.255.0 works for most home networks.
@@ -81,6 +87,57 @@ sensor:
     id: wifi_signal_db
     update_interval: 60s
     entity_category: "diagnostic"
+
+  - platform: mics_4514
+    id: mics4514
+    nitrogen_dioxide:
+      name: Nitrogen Dioxide
+    carbon_monoxide:
+      name: Carbon Monoxide
+    hydrogen:
+      name: Hydrogen
+    ethanol:
+      name: Ethanol
+    methane:
+      name: Methane
+    ammonia:
+      name: Ammonia
+    update_interval: 10s
+
+light:
+  - platform: esp32_rmt_led_strip
+    id: rgb_light
+    name: "RGB Light"
+    pin: GPIO8
+    rmt_channel: 0
+    default_transition_length: 0s
+    chipset: WS2812
+    num_leds: 1
+    rgb_order: grb
+#    restore_mode: RESTORE_DEFAULT_ON
+    effects:
+      - pulse:
+          name: "Slow Pulse"
+          transition_length: 1000ms
+          update_interval: 1000ms
+          min_brightness: 15%
+          max_brightness: 40%
+      - pulse:
+          name: "Fast Pulse"
+          transition_length: 100ms
+          update_interval: 100ms
+          min_brightness: 50%
+          max_brightness: 100%
+      - random:
+      - random:
+          name: Random Effect With Custom Values
+          transition_length: 5s
+          update_interval: 7s
+      - addressable_rainbow:
+      - addressable_rainbow:
+          name: Rainbow Effect With Custom Values
+          speed: 10
+          width: 50
 
 text_sensor:
   - platform: wifi_info

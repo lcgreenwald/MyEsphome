@@ -1,8 +1,12 @@
 substitutions:
   name: esp32-devkit1
-  version: "24.10.15.0"
-  device_description: ${name} made by Larry Greenwald - version ${version}.
-  friendly_name: ESP32 DevKit1
+
+packages:
+  lcgreenwald.devkits: # name of package/project
+    url: https://github.com/lcgreenwald/MyEsphome # url of the repository
+    ref: dev # branch, tag or commit SHA
+    files: [Integrations/ESPHome/devkits.yaml] # Path to config from base repo URL
+    refresh: 1min # how often to sync updates from the remote url
 
 esphome:
   name: "${name}"
@@ -12,9 +16,9 @@ esphome:
   platformio_options:
     board_build.flash_mode: dio
 
-  project:
-    name: "LarryGreenwald.${name}"
-    version: "${version}"
+#  project:
+#    name: "LarryGreenwald.${name}"
+#    version: "${version}"
 
   min_version: 2024.6.0
 
@@ -23,31 +27,15 @@ esp32:
   framework:
     type: esp-idf
 
-dashboard_import:
-  package_import_url: github://ApolloAutomation/AIR-1/Integrations/ESPHome/AIR-1.yaml
-  import_full_config: false
-
-# Enable logging
-logger:
-  level: NONE
 # Enable Home Assistant API
 api:
   encryption:
-    key: !secret api-key
-
-ota:
-  - platform: esphome
-    password: "1c71d2a5785eb9d3f21dc87141938281"
+    key: !secret api_key
 
 wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
   power_save_mode: LIGHT
-
-  # Enable fallback hotspot (captive portal) in case wifi connection fails
-  ap:
-    ssid: "Esp32-Devkit1 Fallback Hotspot"
-    password: !secret ap_password
 
   manual_ip:
     # Set this to the IP of the ESP
@@ -59,66 +47,4 @@ wifi:
     dns1: 192.168.1.181
     dns2: 192.168.1.107
 
-captive_portal:
 
-safe_mode:
-
-web_server:
-  port: 80
-
-sensor:
-  - platform: internal_temperature
-    name: "ESP Temperature"
-    id: sys_esp_temperature
-
-  - platform: uptime
-    name: Uptime
-    id: sys_uptime
-    update_interval: 60s
-
-  - platform: wifi_signal
-    name: RSSI
-    id: wifi_signal_db
-    update_interval: 60s
-    entity_category: "diagnostic"
-
-light:
-  - platform: esp32_rmt_led_strip
-    id: rgb_light
-    name: "RGB Light"
-    pin: GPIO8
-    rmt_channel: 0
-    default_transition_length: 0s
-    chipset: WS2812
-    num_leds: 1
-    rgb_order: grb
-#    restore_mode: RESTORE_DEFAULT_ON
-    effects:
-      - pulse:
-          name: "Slow Pulse"
-          transition_length: 1000ms
-          update_interval: 1000ms
-          min_brightness: 15%
-          max_brightness: 40%
-      - pulse:
-          name: "Fast Pulse"
-          transition_length: 100ms
-          update_interval: 100ms
-          min_brightness: 50%
-          max_brightness: 100%
-      - random:
-      - random:
-          name: Random Effect With Custom Values
-          transition_length: 5s
-          update_interval: 7s
-      - addressable_rainbow:
-      - addressable_rainbow:
-          name: Rainbow Effect With Custom Values
-          speed: 10
-          width: 50
-
-text_sensor:
-  - platform: wifi_info
-    ip_address:
-      name: " IP"
-      icon: "mdi:ip-outline"
