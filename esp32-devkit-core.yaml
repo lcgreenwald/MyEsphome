@@ -1,5 +1,5 @@
 substitutions:
-  version: "25.02.20.0"
+  version: "25.02.23.0"
   device_description: ${name} made by Larry Greenwald - version ${version}.
   friendly_name: ESP32 DevKit1
 
