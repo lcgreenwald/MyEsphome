@@ -16,9 +16,9 @@ esphome:
   platformio_options:
     board_build.flash_mode: dio
 
-  project:
-    name: "LarryGreenwald.${name}"
-    version: "${version}"
+#  project:
+#    name: "LarryGreenwald.${name}"
+#    version: "${version}"
 
   min_version: 2024.6.0
 
