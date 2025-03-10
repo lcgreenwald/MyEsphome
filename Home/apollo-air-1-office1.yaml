@@ -1,0 +1,35 @@
+substitutions:
+  name: apollo-air-1-office1
+  version: "24.11.28.0"
+  device_description: ${name} made by Apollo Automation - version ${version}.
+  friendly_name: Apollo AIR-1 Office 1
+
+packages:
+#  ApolloAutomation.AIR-1: github://ApolloAutomation/AIR-1/Integrations/ESPHome/AIR-1.yaml
+  ApolloAutomation.AIR-1: # name of package/project
+    url: https://github.com/ApolloAutomation/AIR-1 # url of the repository
+    ref: main # branch, tag or commit SHA
+    files: [Integrations/ESPHome/AIR-1.yaml] # Path to config from base repo URL
+    refresh: 1min # how often to sync updates from the remote url
+  remote_package:
+    url: https://github.com/lcgreenwald/AIR-1/
+    ref: main
+    files:
+      - Integrations/ESPHome/MyCustom.yaml
+      - Integrations/ESPHome/InstantAQI.yaml
+    refresh: 1min
+
+esphome:
+  name: ${name}
+  name_add_mac_suffix: false
+  friendly_name: ${friendly_name}
+
+api:
+  encryption:
+    key: !secret api-key 
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  power_save_mode: LIGHT
+

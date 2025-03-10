@@ -1,0 +1,29 @@
+substitutions:
+  name: apollo-plt-1-b2c504
+  friendly_name: Apollo PLT-1 Hibiscus
+
+packages:
+ # ApolloAutomation.PLT-1: github://ApolloAutomation/PLT-1/Integrations/ESPHome/PLT-1.yaml
+  ApolloAutomation.PLT-1:
+    url: https://github.com/ApolloAutomation/PLT-1
+#    url: https://github.com/lcgreenwald/PLT-1
+    ref: main
+    files:
+      - Integrations/ESPHome/PLT-1_Minimal.yaml
+    refresh: 1min
+
+esphome:
+  name: ${name}
+  name_add_mac_suffix: false
+  friendly_name: ${friendly_name}
+
+
+api:
+  encryption:
+    key: !secret apollo-plt-1-hibiscus-api-key
+
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  power_save_mode: LIGHT
