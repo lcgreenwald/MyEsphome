@@ -34,7 +34,7 @@ api:
 
 ota:
   - platform: esphome
-    password: "740b9a8cf0c3737df1acb9d2f9f67073"
+    password: !secret esp32-devkit2-ota-password
 
 wifi:
   ssid: !secret wifi_ssid

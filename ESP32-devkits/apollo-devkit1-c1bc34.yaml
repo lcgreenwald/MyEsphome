@@ -27,11 +27,13 @@ logger:
 # Enable Home Assistant API
 api:
   encryption:
-    key: "ayV16V/Ol7MgipryDPdCVI3VHCMsZIy7IzBUo3x2AMw="
+    key: !secret apollo-dev-1-api-key
+#    key: "ayV16V/Ol7MgipryDPdCVI3VHCMsZIy7IzBUo3x2AMw="
  
 ota:
   - platform: esphome
-    password: "a53d93acd493275512730c776f88722a"
+    password: !secret apollo-dev-1-ota-key
+#    password: "a53d93acd493275512730c776f88722a"
  
 wifi:
   ssid: !secret wifi_ssid
