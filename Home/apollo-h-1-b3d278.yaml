@@ -1,0 +1,39 @@
+substitutions:
+  # Larry
+  name: apollo-h-1-b3d278
+  friendly_name: Apollo H-1 Larry
+
+esphome:
+  name: ${name}
+  name_add_mac_suffix: false
+  friendly_name: ${friendly_name}
+
+esp32:
+  framework:
+    type: esp-idf
+    version: 4.4.8
+    platform_version: 5.4.0
+
+api:
+  encryption:
+    key: !secret api-key 
+
+packages:
+  ApolloAutomation.H-1: # name of package/project
+#    url: https://github.com/lcgreenwald/H-1 # url of the repository
+    url: https://github.com/ApolloAutomation/H-1 # url of the repository
+    ref: main # branch, tag or commit SHA
+    files: [Integrations/ESPHome/H-1.yaml] # Path to config from base repo URL
+    refresh: 1d # how often to sync updates from the remote url
+  remote_package:
+    url: https://github.com/lcgreenwald/H-1/
+    ref: main
+    files:
+      - Integrations/ESPHome/MyTunes.yaml
+    refresh: 60s
+
+#esp32_improv: !remove
+
+logger: 
+  level: NONE
+  

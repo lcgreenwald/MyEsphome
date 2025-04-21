@@ -1,15 +1,15 @@
 substitutions:
-  name: apollo-air-1-b24ba4
-  friendly_name: Apollo AIR-1 Greenhouse
+  name: apollo-air-1-mainfloor
+  version: "24.11.28.0"
+  device_description: ${name} made by Apollo Automation - version ${version}.
+  friendly_name: Apollo AIR-1 Main Floor
 
 packages:
   ApolloAutomation.AIR-1: # name of package/project
     url: https://github.com/ApolloAutomation/AIR-1 # url of the repository
-#    url: https://github.com/lcgreenwald/AIR-1 # url of the repository
     ref: main # branch, tag or commit SHA
-    files:
-      - Integrations/ESPHome/AIR-1.yaml # Path to config from base repo URL
-    refresh: 1d # how often to sync updates from the remote url
+    files: [Integrations/ESPHome/AIR-1.yaml] # Path to config from base repo URL
+    refresh: 1min # how often to sync updates from the remote url
   remote_package:
     url: https://github.com/lcgreenwald/AIR-1/
     ref: main
@@ -25,7 +25,7 @@ esphome:
 
 api:
   encryption:
-    key: !secret air-1-greenhouse-api_key 
+    key: !secret api-key 
 
 wifi:
   ssid: !secret wifi_ssid
@@ -34,9 +34,9 @@ wifi:
 
   manual_ip:
     # Set this to the IP of the ESP
-    static_ip: 192.168.2.101
+    static_ip: 192.168.1.218
     # Set this to the IP address of the router. Often ends with .1
-    gateway: 192.168.2.1
+    gateway: 192.168.1.1
     # The subnet of the network. 255.255.255.0 works for most home networks.
     subnet: 255.255.255.0
     dns1: 192.168.1.181
