@@ -1,0 +1,45 @@
+alias: "!Update PLT-1B Garden1"
+description: ""
+triggers:
+  - trigger: state
+    entity_id:
+      - binary_sensor.apollo_plt_1b_aa01e0_online
+    to: "on"
+    from: "off"
+conditions: []
+actions:
+  - if:
+      - condition: state
+        entity_id: update.apollo_plt_1b_garden1_firmware
+        state: "on"
+    then:
+      - action: switch.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id: switch.apollo_plt_1b_aa01e0_prevent_sleep
+      - data:
+          message: PLT-1B Garden1 firmware updated.
+          title: ESPHome Device Firmware Updated
+        action: notify.notification_group_larry
+        enabled: true
+      - action: update.install
+        target:
+          entity_id: update.apollo_plt_1b_garden1_firmware
+        data: {}
+      - wait_for_trigger:
+          - trigger: state
+            entity_id:
+              - update.apollo_plt_1b_garden1_firmware
+            to: "off"
+        timeout:
+          hours: 0
+          minutes: 15
+          seconds: 0
+          milliseconds: 0
+      - action: switch.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id: switch.apollo_plt_1b_aa01e0_prevent_sleep
+mode: single
