@@ -1,4 +1,4 @@
-alias: "!Update PLT-1B Garden1"
+alias: "Update PLT-1B Garden1"
 description: ""
 triggers:
   - trigger: state
