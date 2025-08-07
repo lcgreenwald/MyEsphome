@@ -1,7 +1,7 @@
 #Define Project
 substitutions:
   name: apollo-dev-2
-  version:  "1"
+  version:  "25.08.07.1"
   device_description: ${name} made by Apollo Automation - version ${version}.
 
 
@@ -22,8 +22,8 @@ esp32:
   variant: esp32c6
   framework:
     type: esp-idf
-    version: 5.3.1
-    platform_version: 6.9.0
+#    version: 5.3.1
+#    platform_version: 6.9.0
 
 # Enable logging
 logger:
@@ -99,6 +99,7 @@ sensor:
   - platform: internal_temperature
     name: "ESP Temperature"
     id: sys_esp_temperature
+    update_interval: 60s
 
   - platform: uptime
     name: Uptime
