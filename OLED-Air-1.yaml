@@ -1,0 +1,57 @@
+substitutions:
+  name: apollo-air-1-xxxxxx
+  friendly_name: Apollo AIR-1 Office
+packages:
+  ApolloAutomation.AIR-1: github://ApolloAutomation/AIR-1/Integrations/ESPHome/AIR-1_BLE.yaml
+esphome:
+  name: ${name}
+  name_add_mac_suffix: false
+  friendly_name: ${friendly_name}
+api:
+  encryption:
+    key: REDACTED
+
+
+wifi:
+  ssid: !secret iot_ssid
+  password: !secret iot_password
+
+# BEGIN USER CONFIG
+
+i2c:
+  sda: GPIO1
+  scl: GPIO0
+  scan: true
+
+font:
+  - file: "fonts/Arial.ttf"
+    id: font_arial
+    size: 10
+
+display:
+  - platform: ssd1306_i2c
+    model: "SSD1306 128x64"
+    address: 0x3C
+    lambda: |-
+      int left_x = 0;
+      int right_x = 70;   // adjust for spacing
+      int line_height = 10;
+
+      // HEADER
+      it.print(0, 0, id(font_arial), "Apollo AIR-1");
+
+      // ROW 1: Temp + VOC
+      float temp_f = id(dps310temperature).state * 9.0f / 5.0f + 32.0f;
+      it.printf(left_x, 12, id(font_arial), "T: %.1fF", temp_f);
+      it.printf(right_x, 12, id(font_arial), "VOC: %.0f", id(sen55_voc).state);
+
+      // ROW 2: CO2 + Pressure
+      float pressure_psi = id(dps310pressure).state * 0.0145038;
+      it.printf(left_x, 22, id(font_arial), "CO2: %.0f", id(co2).state);
+      it.printf(right_x, 22, id(font_arial), "P: %.1fpsi", pressure_psi);
+
+      // ROWS 3–6: PM values stacked
+      it.printf(left_x, 34, id(font_arial), "PM0.3-1: %.0f", id(pm0_3_to_1).state);
+      it.printf(left_x, 44, id(font_arial), "PM1-2.5: %.0f", id(pm1_to_2_5).state);
+      it.printf(left_x, 54, id(font_arial), "PM2.5-4: %.0f", id(pm2_5_to_4).state);
+      it.printf(left_x, 64, id(font_arial), "PM4-10: %.0f", id(pm4_to_10).state);
